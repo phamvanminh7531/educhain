@@ -1,10 +1,12 @@
 import json
 import logging
 from datetime import datetime
+import requests
 
 from core.block import Block, BlockHeader
 from core.io_blockchain import BlockchainMemory
 from core.io_mem_pool import MemPool
+from core.io_known_nodes import KnownNodesMemory
 from core.merkle_tree import get_merkle_root
 from core.utils import calculate_hash
 from core.values import NUMBER_OF_LEADING_ZEROS
@@ -17,11 +19,11 @@ class BlockException(Exception):
 
 
 class ProofOfWork:
-    def __init__(self):
+    def __init__(self, hostname: str):
         logging.info("Starting Proof of Work")
-        # self.known_nodes_memory = KnownNodesMemory()
+        self.known_nodes_memory = KnownNodesMemory()
         blockchain_memory = BlockchainMemory()
-        # self.hostname = hostname
+        self.hostname = hostname
         self.mempool = MemPool()
         self.blockchain = blockchain_memory.get_blockchain_from_memory()
         self.new_block = None
@@ -63,4 +65,27 @@ class ProofOfWork:
             self.new_block = Block(transactions=transactions, block_header=block_header)
         else:
             raise BlockException("", "No transaction in mem_pool")
+
+    def broadcast(self) -> bool:
+        logging.info("Broadcasting to other nodes")
+        node_list = self.known_nodes_memory.known_nodes
+        broadcasted_node = False
+        for node in node_list:
+            if node.hostname != self.hostname:
+                block_content = {
+                    "block": {
+                        "header": self.new_block.block_header.to_dict,
+                        "transactions": self.new_block.transactions
+                    },
+                    "sender": self.hostname
+                }
+                try:
+                    logging.info(f"Broadcasting to {node.hostname}")
+                    node.send_new_block(block_content)
+                    broadcasted_node = True
+                except requests.exceptions.ConnectionError as e:
+                    logging.info(f"Failed broadcasting to {node.hostname}: {e}")
+                except requests.exceptions.HTTPError as e:
+                    logging.info(f"Failed broadcasting to {node.hostname}: {e}")
+        return broadcasted_node
 

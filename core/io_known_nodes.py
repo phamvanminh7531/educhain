@@ -1,13 +1,14 @@
 import json
 import logging
 import os
+from memory.memory_path import KNOWN_NODES_DIR
 
 from core.node import Node
 
 
 class KnownNodesMemory:
     def __init__(self):
-        self.known_nodes_file = os.environ["KNOWN_NODES_DIR"]
+        self.known_nodes_file = KNOWN_NODES_DIR
 
     def store_known_nodes(self, known_nodes: list):
         logging.info("Store known nodes")

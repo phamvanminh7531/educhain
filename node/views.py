@@ -1,14 +1,20 @@
 import logging
 import json
+from memory.memory_path import MY_HOSTNAME
 from core.io_blockchain import BlockchainMemory
 from core.transaction_validation import TransactionValidation, TransactionException
 from core.block_validation import BlockValidation, NewBlockException
+from core.node import Node
+from core.network import Network
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 
 blockchain_memory = BlockchainMemory()
+my_node = Node(MY_HOSTNAME)
+network = Network(my_node)
+network.join_network()
 
 # Create your views here.
 @api_view(['POST'])

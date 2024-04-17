@@ -1,9 +1,9 @@
 [
   {
-    "txid": "913eba6e2df7292486f883626643ba53419a5c61b7051dcb3a7a9fc940b4c0ac",
-    "timestamp": 1713201842.039935,
+    "txid": "63aed6c76cdcde70f420ded05408e63087d59b46ac0a30671a1bc0b4d3b85d70",
+    "timestamp": 1713295313.850471,
     "data": {
-      "text": "test transaction hello con lai"
+      "text": "test block broadcast"
     }
   }
 ]

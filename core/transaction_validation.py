@@ -2,6 +2,7 @@ from core.block import Block
 from core.io_mem_pool import MemPool
 from core.io_known_nodes import KnownNodesMemory
 import logging
+import requests
 
 class TransactionException(Exception):
     def __init__(self, expression, message):

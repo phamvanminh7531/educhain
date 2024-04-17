@@ -16,7 +16,7 @@ class Node:
         }
 
     def post(self, endpoint: str, data: dict = None) -> requests.Response:
-        url = f"{self.base_url}{endpoint}"
+        url = f"{self.base_url}{endpoint}/"
         if data:
             req_return = requests.post(url, json=data)
         else:
@@ -25,7 +25,7 @@ class Node:
         return req_return
 
     def get(self, endpoint: str, data: dict = None) -> list:
-        url = f"{self.base_url}{endpoint}"
+        url = f"{self.base_url}{endpoint}/"
         if data:
             req_return = requests.get(url, json=data)
         else:
@@ -35,19 +35,19 @@ class Node:
 
     def advertise(self, hostname: str):
         data = {"hostname": hostname}
-        return self.post(endpoint="new_node_advertisement", data=data)
+        return self.post(endpoint="node/new_node_advertisement", data=data)
 
     def known_node_request(self):
-        return self.get(endpoint="known_node_request")
+        return self.get(endpoint="node/known_node_request")
 
     def send_new_block(self, block: dict) -> requests.Response:
-        return self.post(endpoint="block", data=block)
+        return self.post(endpoint="node/block", data=block)
 
     def send_transaction(self, transaction_data: dict) -> requests.Response:
-        return self.post("transactions", transaction_data)
+        return self.post("node/transactions", transaction_data)
 
     def get_blockchain(self) -> list:
-        return self.get(endpoint="block")
+        return self.get(endpoint="node/get-blockchain")
 
     def restart(self):
-        return self.post(endpoint="restart")
+        return self.post(endpoint="node/restart")

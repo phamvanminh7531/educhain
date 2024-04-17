@@ -9,7 +9,7 @@ from core.node import Node
 
 class Network:
 
-    FIRST_KNOWN_NODE_HOSTNAME = "http://127.0.0.1:8000"
+    FIRST_KNOWN_NODE_HOSTNAME = "127.0.0.1:8000"
 
     def __init__(self, node: Node, init_known_nodes_file: bool = True):
         self.node = node

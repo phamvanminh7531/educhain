@@ -13,7 +13,7 @@ class KnownNodesMemory:
     def store_known_nodes(self, known_nodes: list):
         logging.info("Store known nodes")
         with open(self.known_nodes_file, "w") as jsonFile:
-            json.dump(known_nodes, jsonFile)
+            json.dump(known_nodes, jsonFile, indent=2)
 
     @property
     def known_nodes(self) -> [Node]:
@@ -30,7 +30,7 @@ class KnownNodesMemory:
             if new_node not in current_nodes:
                 current_nodes_json.append(new_node.dict)
                 f.seek(0)
-                json.dump(current_nodes_json, f)
+                json.dump(current_nodes_json, f, indent=2)
 
     def store_nodes(self, nodes: [Node]):
         for node in nodes:

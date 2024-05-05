@@ -8,7 +8,8 @@ class BlockHeader:
     """
     Define a block header class to store infomation
     """
-    def __init__(self, previous_block_hash: str, merkle_root: str, timestamp: float, noonce: int, hash = None):
+    def __init__(self, height: int, previous_block_hash: str, merkle_root: str, timestamp: float, noonce: int, hash = None):
+        self.height = height
         self.previous_block_hash = previous_block_hash
         self.merkle_root = merkle_root
         self.timestamp = timestamp
@@ -39,6 +40,7 @@ class BlockHeader:
     @property
     def to_dict(self) -> dict:
         return {
+            "height": self.height,
             "previous_block_hash": self.previous_block_hash,
             "merkle_root": self.merkle_root,
             "timestamp": self.timestamp,

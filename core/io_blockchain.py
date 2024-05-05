@@ -12,6 +12,9 @@ class BlockchainMemory:
         self.file_name = BLOCKCHAIN_DIR
 
     def get_blockchain_from_memory(self):
+        """
+        mnbvbhjnvbjnvbjv
+        """
         logging.info("Getting blockchain from memory")
         with open(self.file_name, "r") as file_obj:
             blocks_text = file_obj.read()

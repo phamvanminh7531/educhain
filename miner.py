@@ -3,20 +3,20 @@ import os
 import time
 from core.io_mem_pool import MemPool
 from core.new_block_creation import ProofOfWork, BlockException
+from memory.memory_path import MY_HOSTNAME
 
 logging.basicConfig(level=logging.DEBUG, format=f'%(asctime)s: %(message)s')
 
 
 def main():
-    # my_hostname = os.environ['MY_HOSTNAME']
     mempool = MemPool()
     mempool.clear_transactions_from_memory()
 
     while True:
-        pow = ProofOfWork()
+        pow = ProofOfWork(MY_HOSTNAME)
         try:
             pow.create_new_block()
-            # pow.broadcast()
+            pow.broadcast()
             mempool.clear_transactions_from_memory()
         except BlockException:
             logging.info("No transaction in mem pool")

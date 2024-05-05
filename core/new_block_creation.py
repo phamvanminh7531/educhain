@@ -9,7 +9,9 @@ from core.io_mem_pool import MemPool
 from core.io_known_nodes import KnownNodesMemory
 from core.merkle_tree import get_merkle_root
 from core.utils import calculate_hash
-from core.values import NUMBER_OF_LEADING_ZEROS
+
+target_hash = '0x7aff850000000000000000000000000000000000000000000000000000'
+diff = int(target_hash, 16)
 
 
 class BlockException(Exception):
@@ -36,8 +38,7 @@ class ProofOfWork:
         logging.info("Trying to find noonce")
         block_header_hash = ""
         noonce = block_header.noonce
-        starting_zeros = "".join([str(0) for _ in range(NUMBER_OF_LEADING_ZEROS)])
-        while not block_header_hash.startswith(starting_zeros):
+        while True:
             noonce = noonce + 1
             block_header_content = {
                 "previous_block_hash": block_header.previous_block_hash,
@@ -46,6 +47,9 @@ class ProofOfWork:
                 "noonce": noonce
             }
             block_header_hash = calculate_hash(json.dumps(block_header_content))
+            logging.info(f"Current hash {block_header_hash}")
+            if int(block_header_hash, 16) < diff:
+                break
         logging.info("Found the noonce!")
         return noonce
 
@@ -54,6 +58,7 @@ class ProofOfWork:
         transactions = self.mempool.get_transactions_from_memory()
         if transactions:
             block_header = BlockHeader(
+                height = len(self.blockchain),
                 merkle_root=get_merkle_root(transactions),
                 previous_block_hash=self.blockchain.block_header.hash,
                 timestamp=datetime.timestamp(datetime.now()),

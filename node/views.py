@@ -7,11 +7,12 @@ from core.transaction_validation import TransactionValidation, TransactionExcept
 from core.block_validation import BlockValidation, NewBlockException
 from core.node import Node
 from core.network import Network
+from core.io_mem_pool import MemPool
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-
+memory_pool = MemPool()
 blockchain_memory = BlockchainMemory()
 my_node = Node(MY_HOSTNAME)
 network = Network(my_node)
@@ -70,3 +71,9 @@ def get_blockchain(request):
     logging.info("Block request")
     blockchain_base = blockchain_memory.get_blockchain_from_memory()
     return Response(blockchain_base.to_dict, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_transaction_in_pool(request):
+    logging.info("Transaction in memory pool request")
+    transactions = memory_pool.get_transactions_from_memory()
+    return Response(transactions, status = status.HTTP_200_OK)

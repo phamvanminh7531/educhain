@@ -9,6 +9,9 @@ from core.io_blockchain import BlockchainMemory
 from core.transaction_validation import TransactionValidation
 
 class NewBlockException(Exception):
+    """
+    Block validation exception
+    """
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
@@ -23,7 +26,7 @@ class BlockValidation:
         self.known_nodes_memory = KnownNodesMemory()
         self.blockchain_memory = BlockchainMemory()
         self.hostname = hostname
-    
+
     def receive(self, new_block: dict):
         """
         Recieve and init new block data from request
@@ -59,15 +62,24 @@ class BlockValidation:
         self._validate_transaction()
     
     def add_new_block_to_blockchain(self):
+        """
+        Adding new block recive from network to memory
+        """
         self.new_block.previous_block = self.blockchain
         self.blockchain_memory.store_blockchain_in_memory(self.new_block)
     
     def clear_block_transactions_from_mempool(self):
+        """
+        Delect duplicate transaction between new block and mem pool
+        """
         current_transactions = self.mempool.get_transactions_from_memory()
         transactions_cleared = [transaction for transaction in current_transactions if not (transaction in self.new_block.transactions)]
         self.mempool.store_transactions_in_memory(transactions_cleared)
 
     def broadcast(self):
+        """
+        Broadcasting to all node in know_nodes_memory
+        """
         logging.info(f"Broadcasting block")
         node_list = self.known_nodes_memory.known_nodes
         for node in node_list:

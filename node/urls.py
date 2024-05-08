@@ -16,14 +16,16 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import validate_transaction, validate_block
+from .views import validate_transaction, validate_block, get_transaction_in_pool
 from .views import known_node_request, new_node_advertisement, get_blockchain
 
 
+
 urlpatterns = [
-    path('transactions/', validate_transaction, name="transaction"),
+    path('transaction/', validate_transaction, name="transaction"),
     path('block/', validate_block, name="block"),
-    path('new_node_advertisement/', new_node_advertisement, name="new_node_advertisement"),
-    path('known_node_request/', known_node_request, name="known_node_request"),
+    path('new-node-advertisement/', new_node_advertisement, name="new_node_advertisement"),
+    path('known-node-request/', known_node_request, name="known_node_request"),
     path('get-blockchain/', get_blockchain, name="get_blockchain"),
+    path('get-pool/', get_transaction_in_pool, name="get_pool"),
 ]

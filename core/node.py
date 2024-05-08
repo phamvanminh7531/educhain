@@ -35,16 +35,16 @@ class Node:
 
     def advertise(self, hostname: str):
         data = {"hostname": hostname}
-        return self.post(endpoint="node/new_node_advertisement", data=data)
+        return self.post(endpoint="node/new-node-advertisement", data=data)
 
     def known_node_request(self):
-        return self.get(endpoint="node/known_node_request")
+        return self.get(endpoint="node/known-node-request")
 
     def send_new_block(self, block: dict) -> requests.Response:
         return self.post(endpoint="node/block", data=block)
 
     def send_transaction(self, transaction_data: dict) -> requests.Response:
-        return self.post("node/transactions", transaction_data)
+        return self.post("node/transaction", transaction_data)
 
     def get_blockchain(self) -> list:
         return self.get(endpoint="node/get-blockchain")

@@ -5,11 +5,12 @@ import requests
 from core.io_blockchain import BlockchainMemory
 from core.io_known_nodes import KnownNodesMemory
 from core.node import Node
+from memory.memory_path import FIRST_KNOW_NODE_HOSTNAME
 
 
 class Network:
 
-    FIRST_KNOWN_NODE_HOSTNAME = "127.0.0.1:8000"
+    FIRST_KNOWN_NODE_HOSTNAME = FIRST_KNOW_NODE_HOSTNAME
 
     def __init__(self, node: Node, init_known_nodes_file: bool = True):
         self.node = node

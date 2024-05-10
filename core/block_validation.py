@@ -21,18 +21,19 @@ class BlockValidation:
     def __init__(self, blockchain: Block, hostname: str):
         self.blockchain = blockchain
         self.new_block = None
-        # self.sender = ""
+        self.sender = ""
         self.mempool = MemPool()
         self.known_nodes_memory = KnownNodesMemory()
         self.blockchain_memory = BlockchainMemory()
         self.hostname = hostname
 
-    def receive(self, new_block: dict):
+    def receive(self, new_block: dict, sender: str):
         """
         Recieve and init new block data from request
         """
         new_block_header = BlockHeader(**new_block["header"])
         self.new_block = Block(transactions=new_block["transactions"], block_header=new_block_header)
+        self.sender = sender
         try:
             """
             Check the previous hash of new block is equal to current last block in blockchain

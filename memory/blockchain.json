@@ -1,29 +1,6 @@
 [
   {
     "header": {
-      "height": 1,
-      "previous_block_hash": "a1c1096c962ebda9988c16fd9dcf119c76973fb08049b34bab69f716f395e206",
-      "merkle_root": "263be4d02b0564a73a590cf659cde6d0cdb5f908f627a4dee982f1ec1e502d54",
-      "timestamp": 1714700388.051056,
-      "noonce": 59754666,
-      "hash": "00000063631ec6538e934d228990c50b5c2333c5fb3219523a7c0053d8fef4a3"
-    },
-    "transactions": [
-      {
-        "txid": "8b2bd30fbd5117eb821ac6d114266d0f1aad5c573d8d7e41079e0b973e6109aa",
-        "timestamp": 1714699857.113956,
-        "data": {
-          "student_name": "Nguy\u1ec5n Ho\u00e0ng Nam",
-          "student_code": "19050032",
-          "teacher_name": "Hu\u1ef3nh Quang \u0110\u1ee9c",
-          "course_name": "Digital Marketing",
-          "mark": "5.00"
-        }
-      }
-    ]
-  },
-  {
-    "header": {
       "height": 0,
       "previous_block_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "merkle_root": "b0fc67989fccb5f52be2c84a54315e7da39d0c8b00d4f69a153aa71fc4b6aa6e",

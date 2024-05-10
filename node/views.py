@@ -40,10 +40,11 @@ def validate_block(request):
     blockchain_base = blockchain_memory.get_blockchain_from_memory()
     try:
         block = BlockValidation(blockchain=blockchain_base, hostname=MY_HOSTNAME)
-        block.receive(data["block"])
+        block.receive(data["block"], data["sender"])
         block.validate()
         block.add_new_block_to_blockchain()
         block.clear_block_transactions_from_mempool()
+        block.broadcast()
     except (NewBlockException, TransactionException) as new_block_exception:
         return Response(f"{new_block_exception}", status = status.HTTP_406_NOT_ACCEPTABLE)
     return Response(data, status = status.HTTP_200_OK)

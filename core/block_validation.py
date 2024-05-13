@@ -64,7 +64,7 @@ class BlockValidation:
     
     def clear_block_transactions_from_mempool(self):
         """
-        Delect duplicate transaction between new block and mem pool
+        Delete duplicate transaction between new block and mem pool
         """
         current_transactions = self.mempool.get_transactions_from_memory()
         transactions_cleared = [transaction for transaction in current_transactions if not (transaction in self.new_block.transactions)]

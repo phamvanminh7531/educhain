@@ -32,7 +32,7 @@ class TargetHashControl:
         logging.info("Checking block for recalculate target hash")
         with open(self.target_hash_conf_file) as f:
             target_config = json.load(f)
-        if (blockchain.block_header.height % target_config["len_of_block_recal"]) == 0:
+        if (blockchain.block_header.height % target_config["len_of_block_recal"]) == 0 and blockchain.block_header.height!=0:
             self.target_hash_recalculate(blockchain)
         else:
             return None

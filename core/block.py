@@ -8,12 +8,13 @@ class BlockHeader:
     """
     Define a block header class to store infomation
     """
-    def __init__(self, height: int, previous_block_hash: str, merkle_root: str, timestamp: float, noonce: int, hash = None):
+    def __init__(self, height: int, previous_block_hash: str, merkle_root: str, timestamp: float, noonce: int, difficulty: float, hash = None):
         self.height = height
         self.previous_block_hash = previous_block_hash
         self.merkle_root = merkle_root
         self.timestamp = timestamp
         self.noonce = noonce
+        self.difficulty = difficulty
         if hash:
             self.hash = hash
         else:
@@ -25,6 +26,7 @@ class BlockHeader:
             assert self.merkle_root == other.merkle_root
             assert self.timestamp == other.timestamp
             assert self.noonce == other.noonce
+            assert self.difficulty == other.difficulty
             assert self.hash == other.hash
             return True
         except AssertionError:
@@ -45,6 +47,7 @@ class BlockHeader:
             "merkle_root": self.merkle_root,
             "timestamp": self.timestamp,
             "noonce": self.noonce,
+            "difficulty": self.difficulty,
             "hash": self.hash,
         }
 

@@ -9,10 +9,11 @@ from core.io_mem_pool import MemPool
 from core.io_known_nodes import KnownNodesMemory
 from core.merkle_tree import get_merkle_root
 from core.utils import calculate_hash
+from core.io_target_hash import TargetHashControl
 
-target_hash = '0x7aff850000000000000000000000000000000000000000000000000000'
-diff = int(target_hash, 16)
 
+
+current_target = TargetHashControl().get_current_target()
 
 class BlockException(Exception):
     def __init__(self, expression, message):
@@ -48,7 +49,7 @@ class ProofOfWork:
             }
             block_header_hash = calculate_hash(json.dumps(block_header_content))
             logging.info(f"Current hash {block_header_hash}")
-            if int(block_header_hash, 16) < diff:
+            if int(block_header_hash, 16) < int(current_target, 16):
                 break
         logging.info("Found the noonce!")
         return noonce
@@ -63,6 +64,7 @@ class ProofOfWork:
                 previous_block_hash=self.blockchain.block_header.hash,
                 timestamp=datetime.timestamp(datetime.now()),
                 noonce=0,
+                difficulty=TargetHashControl().get_current_difficulty,
                 hash=None
             )
             block_header.noonce = self.get_noonce(block_header)
@@ -76,7 +78,7 @@ class ProofOfWork:
         node_list = self.known_nodes_memory.known_nodes
         broadcasted_node = False
         for node in node_list:
-            if node.hostname != self.hostname:
+            if node.hostname == self.hostname:
                 block_content = {
                     "block": {
                         "header": self.new_block.block_header.to_dict,

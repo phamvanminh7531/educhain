@@ -13,7 +13,7 @@ class BlockchainMemory:
 
     def get_blockchain_from_memory(self):
         """
-        mnbvbhjnvbjnvbjv
+        Get blockchain from memory
         """
         logging.info("Getting blockchain from memory")
         with open(self.file_name, "r") as file_obj:

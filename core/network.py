@@ -4,6 +4,7 @@ import requests
 
 from core.io_blockchain import BlockchainMemory
 from core.io_known_nodes import KnownNodesMemory
+from core.io_target_hash import TargetHashControl
 from core.node import Node
 from memory.memory_path import FIRST_KNOW_NODE_HOSTNAME
 
@@ -16,6 +17,7 @@ class Network:
         self.node = node
         self.blockchain_memory = BlockchainMemory()
         self.known_nodes_memory = KnownNodesMemory()
+        self.target_hash_control = TargetHashControl()
         if init_known_nodes_file:
             self.initialize_known_nodes_file()
 
@@ -101,6 +103,8 @@ class Network:
                 self.known_nodes_memory.store_nodes(known_nodes_of_known_node)
                 self.advertise_to_all_known_nodes()
                 self.initialize_blockchain()
+                self.target_hash_control.calculate_target_hash_first(blockchain=self.blockchain_memory.get_blockchain_from_memory())
+                self.target_hash_control.checking_time_for_recalculate(blockchain=self.blockchain_memory.get_blockchain_from_memory())
             else:
                 logging.info("Default node didn't answer. This could be caused by a network issue.")
                 # initialize_default_blockchain(self.blockchain_memory)

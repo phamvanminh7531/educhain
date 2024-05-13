@@ -1,5 +1,6 @@
 KNOWN_NODES_DIR = 'memory/know_nodes.json'
 MEMPOOL_DIR = 'memory/mempool.json'
 BLOCKCHAIN_DIR = 'memory/blockchain.json'
+TARGET_HASH_CONF_DIR = 'memory/target_hash_config.json'
 MY_HOSTNAME = '127.0.0.1:8000'
-FIRST_KNOW_NODE_HOSTNAME = ''
+FIRST_KNOW_NODE_HOSTNAME = '127.0.0.1:8000'

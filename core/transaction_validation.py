@@ -53,6 +53,6 @@ class TransactionValidation:
             if node.hostname != self.hostname and node.hostname != self.sender:
                 try:
                     logging.info(f"Broadcasting to {node.hostname}")
-                    node.send_transaction({"transaction": self.transaction_data})
+                    node.send_transaction({"transaction": self.transaction_data, "sender": self.hostname})
                 except requests.ConnectionError:
                     logging.info(f"Failed broadcasting to {node.hostname}")

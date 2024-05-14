@@ -19,7 +19,6 @@ def main():
         try:
             pow.create_new_block()
             pow.broadcast()
-            # mempool.clear_transactions_from_memory()
         except BlockException:
             logging.info("No transaction in mem pool")
         time.sleep(1)

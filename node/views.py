@@ -26,7 +26,7 @@ def validate_transaction(request):
     blockchain_base = blockchain_memory.get_blockchain_from_memory()
     try:
         transaction_validate = TransactionValidation(blockchain=blockchain_base, hostname=MY_HOSTNAME)
-        transaction_validate.receive(data["transaction"])
+        transaction_validate.receive(data["transaction"], data["sender"])
         if transaction_validate.is_new:
             transaction_validate.store()
             transaction_validate.broadcast()

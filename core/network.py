@@ -6,7 +6,7 @@ from core.io_blockchain import BlockchainMemory
 from core.io_known_nodes import KnownNodesMemory
 from core.io_target_hash import TargetHashControl
 from core.node import Node
-from memory.memory_path import FIRST_KNOW_NODE_HOSTNAME
+from memory.memory_path import FIRST_KNOW_NODE_HOSTNAME, MY_HOSTNAME
 
 
 class Network:
@@ -94,10 +94,17 @@ class Network:
             return False
         else:
             return True
+    
+    @property
+    def is_default_node(self):
+        if MY_HOSTNAME == FIRST_KNOW_NODE_HOSTNAME:
+            return True
+        else:
+            return False
 
     def join_network(self):
         logging.info("Joining network")
-        if self.other_nodes_exist:
+        if self.other_nodes_exist and self.is_default_node == False:
             default_node_answered = self.advertise_to_default_node()
             if default_node_answered:
                 known_nodes_of_known_node = self.ask_known_nodes_for_their_known_nodes()

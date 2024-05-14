@@ -27,7 +27,8 @@ class Network:
         if self.node.dict != initial_known_node.dict:
             self.known_nodes_memory.store_known_nodes([self.node.dict, initial_known_node.dict])
         else:
-            self.known_nodes_memory.store_known_nodes([self.node.dict])
+            if len(self.known_nodes_memory.known_nodes) < 2:
+                self.known_nodes_memory.store_known_nodes([self.node.dict])
 
     def advertise_to_all_known_nodes(self):
         logging.info("Advertising to all known nodes")

@@ -4,7 +4,7 @@ import json
 from core.utils import calculate_hash
 from datetime import datetime
 
-target_hash = '0x1f3fe0c0000000000000000000000000000000000000000000000000000'
+target_hash = '0xc6ff390000000000000000000000000000000000000000000000000000'
 diff = int(target_hash, 16)
 
 

@@ -18,19 +18,33 @@ class Node:
     def post(self, endpoint: str, data: dict = None) -> requests.Response:
         url = f"{self.base_url}{endpoint}/"
         if data:
-            req_return = requests.post(url, json=data)
+            try:
+                req_return = requests.post(url, json=data)
+                req_return.raise_for_status()
+            except requests.exceptions.HTTPError as err:
+                raise SystemExit(err)
         else:
-            req_return = requests.post(url)
-        req_return.raise_for_status()
+            try:
+                req_return = requests.post(url)
+                req_return.raise_for_status()
+            except requests.exceptions.HTTPError as err:
+                raise SystemExit(err)
         return req_return
 
     def get(self, endpoint: str, data: dict = None) -> list:
         url = f"{self.base_url}{endpoint}/"
         if data:
-            req_return = requests.get(url, json=data)
+            try:
+                req_return = requests.get(url, json=data)
+                req_return.raise_for_status()
+            except requests.exceptions.HTTPError as err:
+                raise SystemExit(err)
         else:
-            req_return = requests.get(url)
-        req_return.raise_for_status()
+            try:
+                req_return = requests.get(url)
+                req_return.raise_for_status()
+            except requests.exceptions.HTTPError as err:
+                raise SystemExit(err)
         return req_return.json()
 
     def advertise(self, hostname: str):

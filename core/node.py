@@ -1,5 +1,4 @@
 import requests
-import logging
 
 
 class Node:
@@ -19,33 +18,19 @@ class Node:
     def post(self, endpoint: str, data: dict = None) -> requests.Response:
         url = f"{self.base_url}{endpoint}/"
         if data:
-            try:
-                req_return = requests.post(url, json=data)
-                req_return.raise_for_status()
-            except requests.exceptions.HTTPError as err:
-                logging.info(f"Node not answering: {self.base_url}")
+            req_return = requests.post(url, json=data)
         else:
-            try:
-                req_return = requests.post(url)
-                req_return.raise_for_status()
-            except requests.exceptions.HTTPError as err:
-                logging.info(f"Node not answering: {self.base_url}")
+            req_return = requests.post(url)
+        req_return.raise_for_status()
         return req_return
 
     def get(self, endpoint: str, data: dict = None) -> list:
         url = f"{self.base_url}{endpoint}/"
         if data:
-            try:
-                req_return = requests.get(url, json=data)
-                req_return.raise_for_status()
-            except requests.exceptions.HTTPError as err:
-                logging.info(f"Node not answering: {self.base_url}")
+            req_return = requests.get(url, json=data)
         else:
-            try:
-                req_return = requests.get(url)
-                req_return.raise_for_status()
-            except requests.exceptions.HTTPError as err:
-                logging.info(f"Node not answering: {self.base_url}")
+            req_return = requests.get(url)
+        req_return.raise_for_status()
         return req_return.json()
 
     def advertise(self, hostname: str):

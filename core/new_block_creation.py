@@ -31,14 +31,14 @@ class ProofOfWork:
         self.blockchain = blockchain_memory.get_blockchain_from_memory()
         self.new_block = None
 
-    @staticmethod
-    def get_noonce(block_header: BlockHeader) -> int:
+    def get_noonce(self, block_header: BlockHeader) -> int:
         """
         Find nononce number when hashing block
         """
         logging.info("Trying to find noonce")
         block_header_hash = ""
         noonce = block_header.noonce
+        last_blockchain_len = len(self.blockchain)
         while True:
             noonce = noonce + 1
             block_header_content = {
@@ -49,6 +49,13 @@ class ProofOfWork:
             }
             block_header_hash = calculate_hash(json.dumps(block_header_content))
             logging.info(f"Current hash {block_header_hash}")
+            if noonce % 200000 != 0 :
+                try:
+                    current_blockchain_len = len(BlockchainMemory().get_blockchain_from_memory())
+                except:
+                    continue            
+            if last_blockchain_len != current_blockchain_len:
+                raise BlockException("", "Stop for because chain updated")
             if int(block_header_hash, 16) < int(current_target, 16):
                 break
         logging.info("Found the noonce!")
@@ -73,12 +80,20 @@ class ProofOfWork:
         else:
             raise BlockException("", "No transaction in mem_pool")
 
+    def clear_block_transactions_from_mempool(self):
+        """
+        Delete duplicate transaction between new block and mem pool
+        """
+        current_transactions = self.mempool.get_transactions_from_memory()
+        transactions_cleared = [transaction for transaction in current_transactions if not (transaction in self.new_block.transactions)]
+        self.mempool.store_transactions_in_memory(transactions_cleared)
+
     def broadcast(self) -> bool:
         logging.info("Broadcasting to other nodes")
         node_list = self.known_nodes_memory.known_nodes
         broadcasted_node = False
         for node in node_list:
-            if node.hostname == self.hostname:
+            if node.hostname != self.hostname:
                 block_content = {
                     "block": {
                         "header": self.new_block.block_header.to_dict,

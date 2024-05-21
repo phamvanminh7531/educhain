@@ -18,10 +18,11 @@ def main():
         pow = ProofOfWork(MY_HOSTNAME)
         try:
             pow.create_new_block()
+            pow.clear_block_transactions_from_mempool()
             pow.broadcast()
         except BlockException:
             logging.info("No transaction in mem pool")
-        time.sleep(1)
+        time.sleep(2)
 
 
 if __name__ == "__main__":

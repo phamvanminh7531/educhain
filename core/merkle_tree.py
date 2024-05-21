@@ -116,3 +116,17 @@ class MerkleTree:
 def get_merkle_root(transactions: list):
     txids = [transaction["txid"] for transaction in transactions]
     return MerkleTree(txids).root.hash
+
+def verifyMerkleProof(txid, proof, root):
+        
+        sumHash = calculate_hash(txid)
+        
+        for hashNode in proof[:-1]:
+            hash = hashNode[0]
+            isLeft = hashNode[1]
+            if isLeft:
+                sumHash = calculate_hash(hash + sumHash)
+            else:
+                sumHash = calculate_hash(sumHash + hash)
+
+        return sumHash == root

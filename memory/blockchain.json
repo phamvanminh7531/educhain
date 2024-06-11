@@ -1,22 +1,10 @@
-[
-  {
-    "header": {
-      "height": 0,
-      "previous_block_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-      "merkle_root": "b0fc67989fccb5f52be2c84a54315e7da39d0c8b00d4f69a153aa71fc4b6aa6e",
-      "timestamp": 1714409584.441593,
-      "noonce": 12,
-      "difficulty": 1,
-      "hash": "a1c1096c962ebda9988c16fd9dcf119c76973fb08049b34bab69f716f395e206"
-    },
-    "transactions": [
-      {
-        "txid": "1bc58c69e52a4d86cbd035f1313af0327336e4a1d1b7b1694fa64453881d2f09",
-        "timestamp": 1714409526.490535,
-        "data": {
-          "Genesis": "I wanna chain our education system - PVM"
-        }
-      }
-    ]
-  }
-]
+[{"header": {"height": 0,
+   "previous_block_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+   "merkle_root": "b0fc67989fccb5f52be2c84a54315e7da39d0c8b00d4f69a153aa71fc4b6aa6e",
+   "timestamp": 1718114179.584697,
+   "noonce": 24788963,
+   "difficulty": 1.0,
+   "hash": "000000473719e64fa65412fd93266da4ba751b45325cfd1cad6082ca2e7d49a3"},
+  "transactions": [{"txid": "1bc58c69e52a4d86cbd035f1313af0327336e4a1d1b7b1694fa64453881d2f09",
+    "timestamp": 1714409526.490535,
+    "data": {"Genesis": "I wanna chain our education system - PVM"}}]}]

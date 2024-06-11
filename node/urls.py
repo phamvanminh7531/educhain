@@ -17,7 +17,8 @@ Including another URLconf
 
 from django.urls import path
 from .views import validate_transaction, validate_block, get_transaction_in_pool
-from .views import known_node_request, new_node_advertisement, get_blockchain
+from .views import known_node_request, new_node_advertisement, get_blockchain, get_user_txids
+from .views import get_transaction
 
 
 
@@ -28,4 +29,6 @@ urlpatterns = [
     path('known-node-request/', known_node_request, name="known_node_request"),
     path('get-blockchain/', get_blockchain, name="get_blockchain"),
     path('get-pool/', get_transaction_in_pool, name="get_pool"),
+    path('get-user-txids/<str:user_code>/', get_user_txids, name="get_user_txids"),
+    path('get-transaction/<str:txid>/', get_transaction, name="get_transaction"),
 ]

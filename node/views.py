@@ -28,6 +28,7 @@ def validate_transaction(request):
         transaction_validate = TransactionValidation(blockchain=blockchain_base, hostname=MY_HOSTNAME)
         transaction_validate.receive(data["transaction"], data["sender"])
         if transaction_validate.is_new:
+            transaction_validate.validate()
             transaction_validate.store()
             transaction_validate.broadcast()
     except TransactionException as transaction_exception:
@@ -78,3 +79,15 @@ def get_transaction_in_pool(request):
     logging.info("Transaction in memory pool request")
     transactions = memory_pool.get_transactions_from_memory()
     return Response(transactions, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_user_txids(request, user_code):
+    logging.info("get user txids")
+    blockchain_base = blockchain_memory.get_blockchain_from_memory()
+    return Response(blockchain_base.get_user_txids(user_code=user_code), status = status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_transaction(request, txid):
+    logging.info("get user txids")
+    blockchain_base = blockchain_memory.get_blockchain_from_memory()
+    return Response(blockchain_base.get_transaction(txid=txid), status = status.HTTP_200_OK)

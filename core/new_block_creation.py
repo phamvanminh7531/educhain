@@ -49,13 +49,13 @@ class ProofOfWork:
             }
             block_header_hash = calculate_hash(json.dumps(block_header_content))
             logging.info(f"Current hash {block_header_hash}")
-            if noonce % 200000 != 0 :
+            if noonce % 200000 == 0 :
                 try:
                     current_blockchain_len = len(BlockchainMemory().get_blockchain_from_memory())
                 except:
                     continue            
-            if last_blockchain_len != current_blockchain_len:
-                raise BlockException("", "Stop for because chain updated")
+                if last_blockchain_len != current_blockchain_len:
+                    raise BlockException("", "Stop for because chain updated")
             if int(block_header_hash, 16) < int(current_target, 16):
                 break
         logging.info("Found the noonce!")

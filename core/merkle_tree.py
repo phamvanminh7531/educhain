@@ -117,6 +117,11 @@ def get_merkle_root(transactions: list):
     txids = [transaction["txid"] for transaction in transactions]
     return MerkleTree(txids).root.hash
 
+def get_transaction_proof(transactions: list, txid: str):
+    txids = [transaction["txid"] for transaction in transactions]
+    return MerkleTree(txids).getMerklePath(txid)
+
+
 def verifyMerkleProof(txid, proof, root):
         
         sumHash = calculate_hash(txid)

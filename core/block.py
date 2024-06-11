@@ -2,6 +2,7 @@ import json
 
 
 from core.utils import calculate_hash
+from core.merkle_tree import get_transaction_proof
 
 
 class BlockHeader:
@@ -88,7 +89,6 @@ class Block:
         return json.dumps({"timestamp": self.block_header.timestamp,
                            "hash": self.block_header.hash,
                            "transactions": self.transactions})
-
     @property
     def to_dict(self):
         block_list = []
@@ -101,3 +101,31 @@ class Block:
             block_list.append(block_data)
             current_block = current_block.previous_block
         return block_list
+    
+    def get_user_txids(self, user_code: str):
+        return_dict = {
+            "user_code": user_code,
+            "txids": []
+        }
+        current_block = self
+        while current_block.previous_block:
+            for transaction in current_block.transactions:
+                if transaction["data"]["student_code"] == user_code:
+                    return_dict["txids"].append(transaction["txid"])
+            current_block = current_block.previous_block
+        return return_dict
+    
+    def get_transaction(self, txid: str):
+        return_dict = {}
+        current_block = self
+        while current_block.previous_block:
+            for transaction in current_block.transactions:
+                if transaction["txid"] == txid:
+                    return_dict["transaction"] = transaction
+                    return_dict["merkle_root"] = current_block.block_header.merkle_root
+                    return_dict["merkle_proof"] = get_transaction_proof(
+                                                        transactions = current_block.transactions,
+                                                        txid = txid
+                                                        )
+            current_block = current_block.previous_block
+        return return_dict

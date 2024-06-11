@@ -110,8 +110,9 @@ class Block:
         current_block = self
         while current_block.previous_block:
             for transaction in current_block.transactions:
-                if transaction["data"]["student_code"] == user_code:
-                    return_dict["txids"].append(transaction["txid"])
+                if "student_code" in transaction["data"]:
+                    if transaction["data"]["student_code"] == user_code:
+                        return_dict["txids"].append(transaction["txid"])
             current_block = current_block.previous_block
         return return_dict
     

@@ -18,13 +18,14 @@ Including another URLconf
 from django.urls import path
 from .views import validate_transaction, validate_block, get_transaction_in_pool
 from .views import known_node_request, new_node_advertisement, get_blockchain, get_user_txids
-from .views import get_transaction
+from .views import get_transaction, reset
 
 
 
 urlpatterns = [
     path('transaction/', validate_transaction, name="transaction"),
     path('block/', validate_block, name="block"),
+    path('reset/', reset, name="reset"),
     path('new-node-advertisement/', new_node_advertisement, name="new_node_advertisement"),
     path('known-node-request/', known_node_request, name="known_node_request"),
     path('get-blockchain/', get_blockchain, name="get_blockchain"),

@@ -91,3 +91,30 @@ def get_transaction(request, txid):
     logging.info("get user txids")
     blockchain_base = blockchain_memory.get_blockchain_from_memory()
     return Response(blockchain_base.get_transaction(txid=txid), status = status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def reset(request):
+    """
+    This function just help for testing -- from pvm
+    """
+    init_block = [{"header": {"height": 0,
+   "previous_block_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+   "merkle_root": "b0fc67989fccb5f52be2c84a54315e7da39d0c8b00d4f69a153aa71fc4b6aa6e",
+   "timestamp": 1718114179.584697,
+   "noonce": 24788963,
+   "difficulty": 1.0,
+   "hash": "000000473719e64fa65412fd93266da4ba751b45325cfd1cad6082ca2e7d49a3"},
+  "transactions": [{"txid": "1bc58c69e52a4d86cbd035f1313af0327336e4a1d1b7b1694fa64453881d2f09",
+    "timestamp": 1714409526.490535,
+    "data": {"Genesis": "I wanna chain our education system - PVM"}}]}]
+    blockchain_memory = BlockchainMemory()
+    blockchain_memory.store_blockchain_dict_in_memory(init_block)
+    known_nodes_memory = KnownNodesMemory()
+    known_nodes_memory.store_known_nodes([])
+    memory_pool = MemPool()
+    my_node = Node(MY_HOSTNAME)
+    network = Network(my_node)
+    network.join_network()
+    return Response({"result": "reset ok"}, status = status.HTTP_200_OK)
+

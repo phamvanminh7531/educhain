@@ -26,7 +26,7 @@ class TransactionValidation:
         self.hostname = hostname
         self.sender = ""
 
-    def receive(self, transaction_data: dict, sender: str):
+    def receive(self, transaction_data: dict, sender = ""):
         """
         Recieve and init transaction data from request
         """

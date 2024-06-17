@@ -88,7 +88,7 @@ def get_user_txids(request, user_code):
 
 @api_view(['GET'])
 def get_transaction(request, txid):
-    logging.info("get user txids")
+    logging.info("get transaction")
     blockchain_base = blockchain_memory.get_blockchain_from_memory()
     return Response(blockchain_base.get_transaction(txid=txid), status = status.HTTP_200_OK)
 

@@ -8,6 +8,7 @@ from core.io_known_nodes import KnownNodesMemory
 from core.io_blockchain import BlockchainMemory
 from core.io_target_hash import TargetHashControl
 from core.transaction_validation import TransactionValidation
+from core.io_target_hash import TargetHashControl
 
 class NewBlockException(Exception):
     """
@@ -28,6 +29,7 @@ class BlockValidation:
         self.blockchain_memory = BlockchainMemory()
         self.target_hash_control = TargetHashControl()
         self.hostname = hostname
+        self.max_target_hash = TargetHashControl().get_max_target()
 
     def receive(self, new_block: dict, sender: str):
         """
@@ -49,9 +51,26 @@ class BlockValidation:
         
     
     def _validate_transaction(self):
-        pass
+        """
+        Validate all transaction in block again
+        """
+        for transaction in self.new_block.transactions:
+            transaction_validation = TransactionValidation(self.blockchain, self.hostname)
+            transaction_validation.receive(transaction_data=transaction)
+            transaction_validation.validate()
+
+    def _validate_hash(self):
+        """
+        Validate block hash
+        """
+        try:
+            assert int(self.new_block.block_header.get_hash(), 16) < int(self.max_target_hash, 16)
+        except:
+            raise NewBlockException("", "Hash of block not invalid !!")
+
     
     def validate(self):
+        self._validate_hash()
         self._validate_transaction()
     
     def add_new_block_to_blockchain(self):

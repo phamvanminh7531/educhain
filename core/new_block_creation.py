@@ -12,9 +12,6 @@ from core.utils import calculate_hash
 from core.io_target_hash import TargetHashControl
 
 
-
-current_target = TargetHashControl().get_current_target()
-
 class BlockException(Exception):
     def __init__(self, expression, message):
         self.expression = expression
@@ -30,6 +27,7 @@ class ProofOfWork:
         self.mempool = MemPool()
         self.blockchain = blockchain_memory.get_blockchain_from_memory()
         self.new_block = None
+        self.current_target = TargetHashControl().get_current_target()
 
     def get_noonce(self, block_header: BlockHeader) -> int:
         """
@@ -56,7 +54,7 @@ class ProofOfWork:
                     continue            
                 if last_blockchain_len != current_blockchain_len:
                     raise BlockException("", "Stop for because chain updated")
-            if int(block_header_hash, 16) < int(current_target, 16):
+            if int(block_header_hash, 16) < int(self.current_target, 16):
                 break
         logging.info("Found the noonce!")
         return noonce

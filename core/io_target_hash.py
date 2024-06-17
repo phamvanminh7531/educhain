@@ -26,6 +26,11 @@ class TargetHashControl:
         with open(self.target_hash_conf_file) as f:
             target_config = json.load(f)
         return target_config["current_target"]
+    
+    def get_max_target(self):
+        with open(self.target_hash_conf_file) as f:
+            target_config = json.load(f)
+        return target_config["max_target"]
 
     def checking_time_for_recalculate(self, blockchain: Block):
         print("Checking")
@@ -51,7 +56,7 @@ class TargetHashControl:
             raito = 4 if raito > 4 else raito
 
             new_target_hash = hex(int(int(target_config["current_target"], 16) * raito))
-            # new_target_hash = target_config["max_target"] if int(new_target_hash, 16) > int(target_config["max_target"], 16) else new_target_hash
+            new_target_hash = target_config["max_target"] if int(new_target_hash, 16) > int(target_config["max_target"], 16) else new_target_hash
 
             target_config["current_target"] = new_target_hash
             f.seek(0)

@@ -1,6 +1,7 @@
 from core.block import Block
 from core.io_mem_pool import MemPool
 from core.io_known_nodes import KnownNodesMemory
+from core.node import EcertNode
 import logging
 import requests
 from core.utils import calculate_hash
@@ -9,7 +10,6 @@ import binascii
 from Crypto.Signature import PKCS1_v1_5
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
-import copy
 
 class TransactionException(Exception):
     def __init__(self, expression, message):
@@ -20,6 +20,8 @@ class TransactionValidation:
     def __init__(self, blockchain: Block, hostname: str):
         self.blockchain = blockchain
         self.transaction_data = {}
+        self.signature = ""
+        self.public_key = ""
         self.is_valid = False
         self.known_node_memory = KnownNodesMemory()
         self.mempool = MemPool()
@@ -33,18 +35,19 @@ class TransactionValidation:
         self.transaction_data = transaction_data
         self.sender = sender
     
-    def validate(self):
-        logging.info("Validating transaction")
-        # Digital Signature validate
-        signature = binascii.unhexlify(self.transaction_data["data"]["signature"])
-        public_key = binascii.unhexlify(self.transaction_data["data"]["public_key"])
-        cert_data = copy.deepcopy(self.transaction_data["data"])
-        del cert_data["signature"]
-        del cert_data["public_key"]
-        new_cert_data_byte = json.dumps(cert_data, indent=2).encode('utf-8')
+    def _signature_validate(self):
+        """
+        Validate teacher digital signature signed in certificate
+        """
+        signature = binascii.unhexlify(self.transaction_data["signature"])
+        # public_key = binascii.unhexlify(self.transaction_data["public_key"])
+        """
+        Get public key by request from E-cert management system
+        """
+        public_key = binascii.unhexlify(EcertNode().get_user_public_key(self.transaction_data["data"]["teacher_code"])["public_key"])
+        new_cert_data_byte = json.dumps(self.transaction_data["data"], indent=2).encode('utf-8')
         new_hasher = SHA256.new(new_cert_data_byte)
         verifier = PKCS1_v1_5.new(RSA.import_key(public_key))
-
         try:
             """
             Validate digital signature
@@ -53,7 +56,11 @@ class TransactionValidation:
         except:
             print("Digital signature validate failed")
             raise TransactionException("", "Digital signature validate failed, data of transaction may be changed")
-        
+    
+    def _hash_validate(self):
+        """
+        Validate hash of txid
+        """
         current_txid = self.transaction_data["txid"]
         # Hash again to validate
         new_transaction_data = {
@@ -70,7 +77,11 @@ class TransactionValidation:
         except:
             print("Txid not same")
             raise TransactionException("", "Txid not same, data of transaction may be changed")
-        
+    
+    def validate(self):
+        logging.info("Validating transaction")        
+        self._signature_validate()
+        self._hash_validate()
         self.is_valid = True
 
 

@@ -113,6 +113,7 @@ def reset(request):
     known_nodes_memory = KnownNodesMemory()
     known_nodes_memory.store_known_nodes([])
     memory_pool = MemPool()
+    memory_pool.clear_transactions_from_memory()
     my_node = Node(MY_HOSTNAME)
     network = Network(my_node)
     network.join_network()

@@ -1,4 +1,5 @@
 import requests
+from memory.memory_path import E_CERT_SYS_HOSTNAME
 
 
 class Node:
@@ -51,3 +52,26 @@ class Node:
 
     def restart(self):
         return self.post(endpoint="node/restart")
+
+class EcertNode:
+    def __init__(self):
+        self.base_url = f"http://{E_CERT_SYS_HOSTNAME}/"
+
+    def post(self, endpoint: str, data: dict = None) -> requests.Response:
+        url = f"{self.base_url}{endpoint}/"
+        if data:
+            req_return = requests.post(url, json=data)
+        else:
+            req_return = requests.post(url)
+        return req_return
+
+    def get(self, endpoint: str, data: dict = None) -> list:
+        url = f"{self.base_url}{endpoint}"
+        if data:
+            req_return = requests.get(url, json=data)
+        else:
+            req_return = requests.get(url)
+        return req_return.json()
+    
+    def get_user_public_key(self, user_code):
+        return self.get(endpoint=f"api/get-public-key/{user_code}")

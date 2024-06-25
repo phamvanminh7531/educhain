@@ -4,8 +4,10 @@ from core.utils import calculate_hash
 
 
 class Transaction():
-    def __init__(self, data: dict):
+    def __init__(self, data: dict, signature, public_key):
         self.data = data
+        self.signature = signature
+        self.public_key = public_key
         self.timestamp = datetime.timestamp(datetime.now())
         self.txid = self.get_transaction_hash()
     
@@ -23,5 +25,7 @@ class Transaction():
             "txid": self.txid,
             "timestamp": self.timestamp,
             "data": self.data,
+            "signature": self.signature,
+            "public_key": self.public_key
         }
         return transaction_data

@@ -115,10 +115,8 @@ class Network:
                 self.target_hash_control.checking_time_for_recalculate(blockchain=self.blockchain_memory.get_blockchain_from_memory())
             else:
                 logging.info("Default node didn't answer. This could be caused by a network issue.")
-                # initialize_default_blockchain(self.blockchain_memory)
         else:
             logging.info("No other node exists. We might be the first node out here.")
-            # initialize_default_blockchain(self.blockchain_memory)
 
     def return_known_nodes(self) -> []:
         return self.known_nodes_memory.return_known_nodes()

@@ -1,0 +1,90 @@
+env: /home/pvm/educhain/env
+project: /home/pvm/educhain/educhain
+
+# install package
+
+sudo apt update
+sudo apt upgrade
+sudo apt install apache2
+sudo apt-get install libapache2-mod-wsgi-py3
+sudo apt install python3
+sudo apt install python3-pip
+sudo apt install python3-virtualenv
+
+sudo a2enmod wsgi
+sudo service apache2 start
+
+
+# Add to WSGIP.py
+import sys
+sys.path.append('/home/pvm/educhain/educhain')
+sys.path.append('/home/pvm/educhain/educhain/educhain')
+
+# change path in memory_path.py like this
+/home/pvm/educhain/educhain/memory/know_nodes.json
+
+# chmod
+sudo chmod 755 /home/pvm
+sudo chmod 775 educhain
+
+sudo chown :www-data educhain
+
+chown -R www-data: /home/pvm/educhain/educhain/memory
+
+
+
+
+# Configure apache configuration file to serve django project
+
+sudo nano /etc/apache2/sites-available/educhain.conf
+
+<VirtualHost *:80>
+   ServerName 20.70.136.180
+   ErrorLog ${APACHE_LOG_DIR}/educhain-error.log
+   CustomLog ${APACHE_LOG_DIR}/educhain-access.log combined
+   WSGIDaemonProcess educhain processes=2 threads=25 python-path=/home/pvm/educhain/educhain/educhain python-home=/home/pvm/educhain/env
+    
+  WSGIScriptAlias / /home/pvm/educhain/educhain/educhain/wsgi.py
+  WSGIProcessGroup educhain
+  WSGIApplicationGroup %{GLOBAL}
+
+
+  # path where wsgi.py is present
+  <Directory /home/pvm/educhain/educhain/educhain/>
+     <Files wsgi.py>
+        Require all granted
+     </Files>
+   </Directory>
+</VirtualHost>
+
+
+sudo a2ensite educhain.conf
+
+sudo a2enmod wsgi
+
+sudo a2dissite 000-default.conf
+
+
+
+
+
+sudo service apache2 restart
+
+tail -f /var/log/apache2/educhain-access.log
+tail -f /var/log/apache2/educhain-error.log
+
+
+## RUN MINER
+
+ps ax | grep miner.py
+nohup python miner.py &
+
+
+
+
+
+
+
+
+
+

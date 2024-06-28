@@ -55,7 +55,7 @@ class Node:
 
 class EcertNode:
     def __init__(self):
-        self.base_url = f"http://{E_CERT_SYS_HOSTNAME}/"
+        self.base_url = f"https://{E_CERT_SYS_HOSTNAME}/"
 
     def post(self, endpoint: str, data: dict = None) -> requests.Response:
         url = f"{self.base_url}{endpoint}/"

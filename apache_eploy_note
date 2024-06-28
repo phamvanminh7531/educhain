@@ -39,7 +39,7 @@ chown -R www-data: /home/pvm/educhain/educhain/memory
 sudo nano /etc/apache2/sites-available/educhain.conf
 
 <VirtualHost *:80>
-   ServerName 20.70.136.180
+   ServerName 172.203.221.119
    ErrorLog ${APACHE_LOG_DIR}/educhain-error.log
    CustomLog ${APACHE_LOG_DIR}/educhain-access.log combined
    WSGIDaemonProcess educhain processes=2 threads=25 python-path=/home/pvm/educhain/educhain/educhain python-home=/home/pvm/educhain/env

@@ -40,11 +40,11 @@ class TransactionValidation:
         Validate teacher digital signature signed in certificate
         """
         signature = binascii.unhexlify(self.transaction_data["signature"])
-        # public_key = binascii.unhexlify(self.transaction_data["public_key"])
+        public_key = binascii.unhexlify(self.transaction_data["public_key"])
         """
         Get public key by request from E-cert management system
         """
-        public_key = binascii.unhexlify(EcertNode().get_user_public_key(self.transaction_data["data"]["teacher_code"])["public_key"])
+        # public_key = binascii.unhexlify(EcertNode().get_user_public_key(self.transaction_data["data"]["teacher_code"])["public_key"])
         new_cert_data_byte = json.dumps(self.transaction_data["data"], indent=2).encode('utf-8')
         new_hasher = SHA256.new(new_cert_data_byte)
         verifier = PKCS1_v1_5.new(RSA.import_key(public_key))

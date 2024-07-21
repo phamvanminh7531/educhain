@@ -53,7 +53,7 @@ class ProofOfWork:
                 except:
                     continue            
                 if last_blockchain_len != current_blockchain_len:
-                    raise BlockException("", "Stop for because chain updated")
+                    raise BlockException("", "Stop mining this block because chain updated")
             if int(block_header_hash, 16) < int(self.current_target, 16):
                 break
         logging.info("Found the noonce!")

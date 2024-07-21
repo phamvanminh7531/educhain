@@ -96,7 +96,7 @@ def get_transaction(request, txid):
 @api_view(['GET'])
 def reset(request):
     """
-    This function just help for testing -- from pvm
+    This function just help for testing
     """
     init_block = [{"header": {"height": 0,
    "previous_block_hash": "0000000000000000000000000000000000000000000000000000000000000000",

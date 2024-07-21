@@ -20,8 +20,6 @@ class TransactionValidation:
     def __init__(self, blockchain: Block, hostname: str):
         self.blockchain = blockchain
         self.transaction_data = {}
-        self.signature = ""
-        self.public_key = ""
         self.is_valid = False
         self.known_node_memory = KnownNodesMemory()
         self.mempool = MemPool()
@@ -41,10 +39,17 @@ class TransactionValidation:
         """
         signature = binascii.unhexlify(self.transaction_data["signature"])
         public_key = binascii.unhexlify(self.transaction_data["public_key"])
-        """
-        Get public key by request from E-cert management system
-        """
-        # public_key = binascii.unhexlify(EcertNode().get_user_public_key(self.transaction_data["data"]["teacher_code"])["public_key"])
+        try:
+            """
+            Validate public key of teacher
+            """
+            assert self.transaction_data["public_key_hash"] == calculate_hash(
+                                                                    str(self.transaction_data["data"]["teacher_code"]) + 
+                                                                    self.transaction_data["public_key"]
+                                                                )
+        except:
+            print("Public key validate failed")
+            raise TransactionException("", "Digital signature validate failed, data of transaction may be changed")
         new_cert_data_byte = json.dumps(self.transaction_data["data"], indent=2).encode('utf-8')
         new_hasher = SHA256.new(new_cert_data_byte)
         verifier = PKCS1_v1_5.new(RSA.import_key(public_key))
@@ -75,8 +80,8 @@ class TransactionValidation:
             """
             assert current_txid == new_txid
         except:
-            print("Txid not same")
-            raise TransactionException("", "Txid not same, data of transaction may be changed")
+            print("Validate TXID hash failed")
+            raise TransactionException("", "Txid validate failed, data of transaction may be changed")
     
     def validate(self):
         logging.info("Validating transaction")        
